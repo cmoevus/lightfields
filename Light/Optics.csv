@@ -1,0 +1,13 @@
+brand,series,model,serial_number,led_brand,led_model,efficiency,file
+LEDil,Angelette,S-B-Plain,F14624,Bridgelux,Vero 18,0.91,LEDil F14624 Vero 18.csv
+LEDil,Angela,S-B,F13662,Bridgelux,Vero 18,0.91,LEDil F13662 Vero 18.csv
+LEDil,Angelina,S-B,F13659,Bridgelux,Vero 18,0.93,LEDil F14624 Vero 18.csv
+LEDil,Angela, W-B,F13664,Bridgelux,Vero 18,0.82,LEDil F13664 Vero 18.csv
+LEDil,Angelette,S-B,F14616,Bridgelux,Vero 18,0.91,LEDil F14616 Vero 18.csv
+LEDil,Stella,Fresnel,F15188,Bridgelux,Vero 18,0.85,LEDil F15188 Vero 18.csv
+Khatod,COSMO,,PLL2008NA,Bridgelux,Vero 18,0.9,Khatod PLL2008NA Vero 18.csv
+Khatod,COSMO,,PLL2008NA,Bridgelux,V22,1.0,Khatod PLL2008NA V22.csv
+LEDil,Angela,S,F13379,Bridgelux,V22,0.93,LEDil F13379 V22.csv
+Bridgelux,V22,,,Bridgelux,V22,1,Bridgelux V22.csv
+Bridgelux,Vero 10,,,Bridgelux,Vero 10,1,Bridgelux Vero 10.csv
+Khatod,COSMO,,PLL2010NA,Bridgelux,Vero 10,1,Khatod PLL2010NA Vero 10.csv
