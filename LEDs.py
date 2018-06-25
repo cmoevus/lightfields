@@ -251,7 +251,7 @@ class LED(object):
     def ppf(self):
         """Return the photosynthetic photon flux of the LED, in um/s.
 
-         If this value is not set, it will estimate it based on its spectral distribution and its lumen rating.
+        If this value is not set, it will estimate it based on its spectral distribution and its lumen rating.
         The calculation is stolen from https://en.wikipedia.org/wiki/Photosynthetically_active_radiation
 
         """
