@@ -71,6 +71,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.pckl
 
 # pyenv
 .python-version
@@ -102,3 +103,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# temp files
+*~
+*.swp
+*.swo
+*.stackdump
+.cache/
