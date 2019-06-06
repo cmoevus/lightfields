@@ -24,3 +24,4 @@ $,current,cri,temperature,voltage,brand,lumens,serial_number,note,ppf,model,spec
 3.65,0.48,80.0,3000.0,27.4,Luminus,1590.0,CHM-6-30-80-27-XH20-F3-3,,,XNova,Luminus XNova CHM11 3000K 80CRI.csv
 9.88,0.99,70,3000,34,Citizen,5540,CLU048-1211C4-30AL7M4-F1,,,CLU-048-1212C4,Citizen CLU048-1212C4 3000K 70CRI.csv
 9.63,1.4,80,3000,33.4,Bridgelux,6846,BXRE-30E6500-D-73,,,V22,Bridgelux V22 3000K 80CRI.csv
+15,3,,,,BriteLabs,,B07D9HWHY6,,,20W Dual Head LED Grow Lights for Seedlings,Brite Labs 20W LED Grow Light.csv
