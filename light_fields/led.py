@@ -18,7 +18,7 @@ class LED(object):
 
     Notes:
     -------
-    - All distance units are defined by the user. All that matters is that they are consistent with each other (don't imx meters and centimeters, for example)
+    - All distance units are defined by the user. All that matters is that they are consistent with each other (don't mix meters and centimeters, for example)
     """
 
     def __init__(self, description, z, center=(0, 0)):
