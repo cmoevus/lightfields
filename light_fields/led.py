@@ -1,7 +1,19 @@
 import os
 
+from scipy.interpolate import BSpline
+
 from light_fields import constants
 from light_fields.spectral_distribution import SpectralDistribution
+
+
+def estimate_spectrum(wavelengths, relative_intensity):
+    def what_the_fuck(l):
+        return l
+
+    return {
+        4000.0: { 4000.0: what_the_fuck }
+    }
+    return BSpline(wavelengths, relative_intensity, 1)
 
 
 class LED(object):

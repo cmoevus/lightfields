@@ -3,6 +3,7 @@ import os
 from scipy import integrate
 import pandas as pd
 import scipy as sp
+import numpy as np
 import functools
 import warnings
 from light_fields import constants, led
@@ -106,43 +107,43 @@ def lumen_to_ppf_led(l, T, f):
 #
 # Better functions for any light source
 #
-#def read_spectrum(f):
-#    spectrum = pd.read_csv('datasets/wavelength_spectrums/' + f)
-#    return led.estimate_spectrum(spectrum.iloc[:, 0], spectrum.iloc[:, 1])
 def read_spectrum(f):
-    """
-    Return a list of interpolated graph from a spectral distribution file.
-    It assumes the graph has been exported from WebPlotDigitizer and named as "CCT" or "CCT CRI", such as "3000K" or "3000K 70CRI".
-    """
-    df = pd.read_csv(f, header=[0, 1])
-
-    # Clean up
-    prev, remove, ccts = None, list(), list()
-    for column in df:
-        if 'Unnamed' in column[0]:
-            remove.append(column)
-            df.loc[:, (prev, column[1])] = df[column[0]][column[1]]
-        else:
-            prev = column[0]
-            ccts.append(column[0])
-    df.drop(remove, axis=1, inplace=True)
-
-    # Make a distribution for each CCT
-    dists = dict()
-    for cct in ccts:
-        data = df.loc[:, cct]
-        func = sp.interpolate.interp1d(data['X'], data['Y'], assume_sorted=True)
-        if 'CRI' in cct:
-            cct, cri = cct.split(' ')
-            cct = int(cct[:-1])
-            cri = int(cri[:-3])
-            if cct not in dists:
-                dists[cct] = dict()
-            dists[cct][cri] = func
-        else:
-            cct = int(cct[:-1]) if cct[:-1].isdigit() else cct
-            dists[cct] = func
-    return dists
+    spectrum = pd.read_csv(f)
+    return led.estimate_spectrum(spectrum.iloc[:, 0], spectrum.iloc[:, 1])
+#def read_spectrum(f):
+#    """
+#    Return a list of interpolated graph from a spectral distribution file.
+#    It assumes the graph has been exported from WebPlotDigitizer and named as "CCT" or "CCT CRI", such as "3000K" or "3000K 70CRI".
+#    """
+#    df = pd.read_csv(f, header=[0, 1])
+#
+#    # Clean up
+#    prev, remove, ccts = None, list(), list()
+#    for column in df:
+#        if 'Unnamed' in column[0]:
+#            remove.append(column)
+#            df.loc[:, (prev, column[1])] = df[column[0]][column[1]]
+#        else:
+#            prev = column[0]
+#            ccts.append(column[0])
+#    df.drop(remove, axis=1, inplace=True)
+#
+#    # Make a distribution for each CCT
+#    dists = dict()
+#    for cct in ccts:
+#        data = df.loc[:, cct]
+#        func = sp.interpolate.interp1d(data['X'], data['Y'], assume_sorted=True)
+#        if 'CRI' in cct:
+#            cct, cri = cct.split(' ')
+#            cct = int(cct[:-1])
+#            cri = int(cri[:-3])
+#            if cct not in dists:
+#                dists[cct] = dict()
+#            dists[cct][cri] = func
+#        else:
+#            cct = int(cct[:-1]) if cct[:-1].isdigit() else cct
+#            dists[cct] = func
+#    return dists
 
 def lumen_to_ppf_from_dist(dist_f, l, cct, cri=None, loose=True):
     """
@@ -155,11 +156,18 @@ def lumen_to_ppf_from_dist(dist_f, l, cct, cri=None, loose=True):
         constants.WAVELENGTH_SPECTRUM_DIRECTORY,
         dist_f
     )
+
+    # short curcuit when spectrum distribution file doesnt exist
+    if not os.path.exists(path):
+        return 0
+
     spectrum = read_spectrum(path)
     if cct in spectrum:
         dists = spectrum[cct]
     elif loose == True:
-        dists = spectrum[list(spectrum.keys())[np.argmin(np.abs([i - cct for i in spectrum.keys()]))]]
+        lowest_key_index = np.argmin(np.abs([i - cct for i in spectrum.keys()]))
+
+        dists = spectrum[list(spectrum.keys())[lowest_key_index]]
     else:
         raise ValueError('Unknown spectrum for this color temperature')
     if type(dists) != dict:
@@ -170,7 +178,6 @@ def lumen_to_ppf_from_dist(dist_f, l, cct, cri=None, loose=True):
         dist = dists[cri]
     else:
         raise ValueError('CRI needs to be defined.')
-
     # Calculate the value
     eta_mu = sp.integrate.quad(lambda l: dist(l) * luminosity_function(l), 400, 700, limit=500)[0] / sp.integrate.quad(dist, 400, 700, limit=500)[0]
     eta_photon = sp.integrate.quad(lambda l: dist(l) * l*1e-9 / (h * c * nA), 400, 700, limit=500)[0] / sp.integrate.quad(dist, 400, 700, limit=500)[0]
@@ -186,5 +193,5 @@ for i, p in enumerate(leds['ppf'].isnull()):
                                               leds.iloc[i]['temperature'],
                                               leds.iloc[i]['cri']))
 
-leds.set_index(['brand', 'series','model'], inplace=True)
+leds.set_index(['brand', 'model'], inplace=True)
 leds.sort_index(inplace=True)
